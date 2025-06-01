@@ -25,13 +25,13 @@ $model = $attributes->has('wire:model') ? $attributes->get('wire:model') : null;
 ></div>
 
 @if ($model)
-    <script>
+    <script @if(app('csp-nonce')) @cspNonce @endif>
         document.addEventListener('livewire:initialized', () => {
-            function {{ $id }}Callback(token) {
+            window.{{ $id }}Callback = function (token) {
                 @this.set("{{ $model }}", token);
             }
 
-            function {{ $id }}ExpiredCallback() {
+            window.{{ $id }}ExpiredCallback = function () {
                 window.turnstile.reset();
             }
 
